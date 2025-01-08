@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TestEntity {
+public class ItemEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    protected String itemCode;
 
-    private String title;
-    private String content;
+    protected String itemName;
 
+    protected String itemDescription;
 
 }

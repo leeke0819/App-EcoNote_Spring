@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/place")
 public class TestController {
+
     @Autowired
     private final TestService testService;
 
@@ -15,8 +16,24 @@ public class TestController {
     public TestController(TestService testService) {
         this.testService = testService;
     }
-    @GetMapping("/one/{s1}")
-    public TestEntity test(@PathVariable String s1, @RequestParam String s2) {
-        return testService.printS(s1, s2);
+
+    @GetMapping("/one")
+    public TestEntity createBoard(@RequestParam String title, @RequestBody String content) {
+        return testService.printS(title, content);
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteBoard(@RequestParam int id) {
+        return testService.deleteBoard(id);
+    }
+
+    @PutMapping("/update")
+    public TestEntity updateBoard(@RequestParam int id, @RequestBody String content) {
+        return testService.updateBoard(id, content);
+    }
+
+    @GetMapping("/read")
+    public TestEntity readBoard(@RequestParam int id) {
+        return testService.getBoardById(id);
     }
 }
