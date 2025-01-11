@@ -1,16 +1,26 @@
 package com.example.demo.service;
 
+import com.example.demo.Dto.TokenDto;
 import com.example.demo.model.UserEntity;
 import com.example.demo.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-
+    private final AuthenticationManagerBuilder managerBuilder;
+    private final TokenProvider tokenProvider;
     @Autowired
     private UserRepository userRepository;
+
+    public UserService(AuthenticationManagerBuilder managerBuilder, TokenProvider tokenProvider) {
+        this.managerBuilder = managerBuilder;
+        this.tokenProvider = tokenProvider;
+    }
 
     public UserEntity saveUser(String email, String password, String nickname) {
 
@@ -38,11 +48,15 @@ public class UserService {
         return userEntity;
     }
 
-    public boolean loginUser(String email, String password) {
+    public TokenDto loginUser(String email, String password) {
         UserEntity userEntity = userRepository.findByEmail(email);
         if (userEntity.getPassword().equals(password)) {
-            return true;
+            UsernamePasswordAuthenticationToken authenticationToken
+                    = new UsernamePasswordAuthenticationToken(email, password);
+            Authentication authentication
+                    = managerBuilder.getObject().authenticate(authenticationToken);
+            return tokenProvider.generateTokenDto(authentication);
         }
-        return false;
+        return null;
     }
 }

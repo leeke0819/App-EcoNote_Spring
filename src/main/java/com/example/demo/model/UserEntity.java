@@ -31,6 +31,8 @@ public class UserEntity {
 
     private int money;
 
+    private String Authority;
+
     //private List<BirdEntity> birdEntities;
 
     //private List<ItemEntity> itemEntities;
