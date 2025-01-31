@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.Dto.LoginRequestDto;
+import com.example.demo.Dto.MyPageResponseDto;
 import com.example.demo.Dto.TokenDto;
 import com.example.demo.model.UserEntity;
 import com.example.demo.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,5 +71,18 @@ public class UserService {
         System.out.println(authentication);
 
         return tokenProvider.generateTokenDto(authentication);
+    }
+
+    public MyPageResponseDto myPage () {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(email);
+        UserEntity userEntity = userRepository.findByEmail(email);
+        System.out.println(userEntity);
+        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
+        System.out.println(userEntity.getMoney());
+        System.out.println(userEntity.getNickname());
+        myPageResponseDto.setMoney(userEntity.getMoney());
+        myPageResponseDto.setNickname(userEntity.getNickname());
+        return myPageResponseDto;
     }
 }
