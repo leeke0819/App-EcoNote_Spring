@@ -76,13 +76,18 @@ public class UserService {
     public MyPageResponseDto myPage () {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(email);
-        UserEntity userEntity = userRepository.findByEmail(email);
-        System.out.println(userEntity);
-        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
-        System.out.println(userEntity.getMoney());
-        System.out.println(userEntity.getNickname());
+
+        UserEntity userEntity = userRepository.findByEmail(email); // userRepository에서 findByEmail함수를 통해서 (String)email를 userEntity에 저장하기.
+        System.out.println(userEntity); // userEntity 출력
+
+        MyPageResponseDto myPageResponseDto = new MyPageResponseDto(); // 객체 생성
+
+        System.out.println(userEntity.getMoney()); // userEntity에서 돈을 가져와서 출력
+        System.out.println(userEntity.getNickname()); // userEntity에서 닉네임을 가져와서 출력
+
         myPageResponseDto.setMoney(userEntity.getMoney());
         myPageResponseDto.setNickname(userEntity.getNickname());
+
         return myPageResponseDto;
     }
 }
